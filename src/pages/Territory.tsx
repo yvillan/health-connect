@@ -98,12 +98,22 @@ export default function Territory() {
     return myVisits.find((v) => v.patient_id === patientId)?.status;
   };
 
-  const getSeverityColor = (daysOverdue: number | null) => {
+  const getSeverityColor = (daysOverdue: number | null, manualPriority: string | null) => {
+    if (manualPriority) {
+      switch (manualPriority) {
+        case 'red': return "border-destructive bg-destructive/5";
+        case 'orange': return "border-orange-500 bg-orange-50";
+        case 'yellow': return "border-yellow-500 bg-yellow-50";
+        case 'green': return "border-green-500 bg-green-50";
+      }
+    }
     if (!daysOverdue) return "border-border";
     if (daysOverdue > 30) return "border-destructive bg-destructive/5";
     if (daysOverdue > 14) return "border-orange-500 bg-orange-50";
     return "border-yellow-500 bg-yellow-50";
   };
+
+
 
   return (
     <div className="space-y-6">
@@ -157,7 +167,7 @@ export default function Territory() {
                 return (
                   <Card
                     key={patient.patient_id}
-                    className={`${getSeverityColor(patient.days_overdue)} transition-all`}
+                    className={`${getSeverityColor(patient.days_overdue, patient.manual_priority)} transition-all`}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
@@ -201,8 +211,17 @@ export default function Territory() {
                             : "-"}
                         </span>
                       </div>
+
+                      {/* Manual Priority Removed as requested */}
+
                       <Badge
-                        variant={patient.days_overdue && patient.days_overdue > 30 ? "destructive" : "secondary"}
+                        variant={
+                          patient.manual_priority === 'red' ? "destructive" :
+                            patient.manual_priority === 'orange' ? "default" : // Orange badge not std, use default
+                              patient.manual_priority === 'yellow' ? "secondary" :
+                                patient.manual_priority === 'green' ? "outline" :
+                                  (patient.days_overdue && patient.days_overdue > 30 ? "destructive" : "secondary")
+                        }
                         className="mt-2"
                       >
                         {patient.days_overdue} dias em atraso
@@ -247,7 +266,10 @@ export default function Territory() {
             <MapComponent
               markers={latePatients?.filter(p => p.latitude && p.longitude).map(p => {
                 let statusColor: 'green' | 'yellow' | 'orange' | 'red' = 'green';
-                if (p.days_overdue) {
+
+                if (p.manual_priority) {
+                  statusColor = p.manual_priority as 'green' | 'yellow' | 'orange' | 'red';
+                } else if (p.days_overdue) {
                   if (p.days_overdue > 30) statusColor = 'red';
                   else if (p.days_overdue > 14) statusColor = 'orange';
                   else statusColor = 'yellow';
