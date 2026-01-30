@@ -14,6 +14,7 @@ import Appointments from "./pages/Appointments";
 import MedicalRecords from "./pages/MedicalRecords";
 import BuscaAtiva from "./pages/BuscaAtiva";
 import Territory from "./pages/Territory";
+import Communication from "./pages/Communication";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,7 +29,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      
+
       <Route
         path="/"
         element={
@@ -39,7 +40,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/patients"
         element={
@@ -50,7 +51,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/appointments"
         element={
@@ -61,7 +62,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/records"
         element={
@@ -72,7 +73,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/busca-ativa"
         element={
@@ -83,7 +84,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
         path="/territory"
         element={
@@ -94,7 +95,18 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
+      <Route
+        path="/communication"
+        element={
+          <ProtectedRoute allowedRoles={["doctor", "nurse", "agent"]}>
+            <AppLayout>
+              <Communication />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
