@@ -199,6 +199,9 @@ export type Database = {
           created_at: string
           full_name: string
           id: string
+          latitude: number | null
+          longitude: number | null
+          manual_priority: string | null
           phone: string | null
           territory: string | null
           updated_at: string
@@ -209,6 +212,9 @@ export type Database = {
           created_at?: string
           full_name: string
           id?: string
+          latitude?: number | null
+          longitude?: number | null
+          manual_priority?: string | null
           phone?: string | null
           territory?: string | null
           updated_at?: string
@@ -219,6 +225,9 @@ export type Database = {
           created_at?: string
           full_name?: string
           id?: string
+          latitude?: number | null
+          longitude?: number | null
+          manual_priority?: string | null
           phone?: string | null
           territory?: string | null
           updated_at?: string
@@ -277,6 +286,9 @@ export type Database = {
           full_name: string | null
           last_diagnosis: string | null
           last_record_id: string | null
+          latitude: number | null
+          longitude: number | null
+          manual_priority: string | null
           next_appointment_date: string | null
           patient_id: string | null
           phone: string | null
@@ -300,7 +312,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "doctor" | "nurse" | "agent"
+      app_role: "doctor" | "nurse" | "agent" | "director"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -428,7 +440,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["doctor", "nurse", "agent"],
+      app_role: ["doctor", "nurse", "agent", "director"],
     },
   },
 } as const
